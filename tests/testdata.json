@@ -1,0 +1,141 @@
+{
+    "userData": [
+        {
+            "name": "user 1",
+            "email": "user1@test.com",
+            "role": "user",
+            "region": "user1",
+            "password": "user1-123456789"
+        },
+        {
+            "name": "user 2",
+            "email": "user2@test.com",
+            "role": "user",
+            "region": "user2",
+            "password": "user2-123456789"
+        },
+        {
+            "name": "user 3",
+            "email": "user3@test.com",
+            "role": "user",
+            "region": "user3",
+            "password": "user3-123456789"
+        },
+        {
+            "name": "user 4",
+            "email": "user4@test.com",
+            "role": "user",
+            "region": "user4",
+            "password": "user4-123456789"
+        },
+        {
+            "name": "user 5",
+            "email": "user5@test.com",
+            "role": "user",
+            "region": "user5",
+            "password": "user5-123456789"
+        },
+        {
+            "name": "user 6",
+            "email": "user6@test.com",
+            "role": "user",
+            "region": "user6",
+            "password": "user6-123456789"
+        },
+        {
+            "name": "user 7",
+            "email": "user7@test.com",
+            "role": "user",
+            "region": "user7",
+            "password": "user7-123456789"
+        },
+        {
+            "name": "user 8",
+            "email": "user8@test.com",
+            "role": "user",
+            "region": "user8",
+            "password": "user8-123456789"
+        }   
+    ],
+    "articleData": [
+        {
+            "title": "user 1",
+            "topic": "article 1",
+            "author": "article1",
+            "role": "user",
+            "region": "article1"
+        },
+        {
+            "title": "user 2",
+            "topic": "article 2",
+            "author": "article2",
+            "role": "user",
+            "region": "article2"
+        },
+        {
+            "title": "user 3",
+            "topic": "article 3",
+            "author": "article3",
+            "role": "user",
+            "region": "article3"
+        },
+        {
+            "title": "user 4",
+            "topic": "article 4",
+            "author": "article4",
+            "role": "user",
+            "region": "article4"
+        },
+        {
+            "title": "user 5",
+            "topic": "article 5",
+            "author": "article5",
+            "role": "user",
+            "region": "article5"
+        },
+        {
+            "title": "user 6",
+            "topic": "article 6",
+            "author": "article6",
+            "role": "user",
+            "region": "article6"
+        },
+        {
+            "title": "user 7",
+            "topic": "article 7",
+            "author": "article7",
+            "role": "user",
+            "region": "article7"
+        }        
+    ],
+    "ticketData": [
+        {
+            "topic": "ticket 1",
+            "user": "Test-ticket Nr. 1"
+        },
+        {
+            "topic": "ticket 2",
+            "user": "Test-ticket Nr. 2"
+        },
+        {
+            "topic": "ticket 3",
+            "user": "Test-ticket Nr. 3"
+        },
+        {
+            "topic": "ticket 4",
+            "user": "Test-ticket Nr. 4"
+        },
+        {
+            "topic": "ticket 5",
+            "user": "Test-ticket Nr. 5"
+        },
+        {
+            "topic": "ticket 6",
+            "user": "Test-ticket Nr. 6"
+        },
+        {
+            "topic": "ticket 7",
+            "user": "Test-ticket Nr. 7"
+        }        
+    ]
+}

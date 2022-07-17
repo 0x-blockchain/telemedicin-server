@@ -1,28 +1,13 @@
-const express = require("express");
-const cors = require("cors");
+const app = require('./app');
+const logger = require('./utils/logging').logger;
+const connectDB = require('./utils/db').connect;
 const dotenv = require("dotenv");
+
 dotenv.config();
 
-
-const app = express();
-// parse requests of content-type: application/json
-// parses incoming requests with JSON payloads
-app.use(express.json());
-app.use(express.urlencoded({ extended: true }));
-// enabling cors for all requests by using cors middleware
-app.use(cors());
-// Enable pre-flight
-app.options("*", cors());
-
-
-app.all("*", (req, res, next) => {
-    const error = new HttpException(404, "Endpoint Not Found.");
-    next(error);
+const httpPort = process.env.PORT || process.env.SERVERPORT;
+connectDB(() => {
+    app.listen(httpPort, () => {
+        logger.info(`unit test with mongoose ${httpPort} ...`);
+    });
 });
-
-const PORT = process.env.SERVERPORT;
-app.listen(PORT, () => {
-  console.log(`Server is running on port ${PORT}.`);
-});
-
-module.exports = app;
