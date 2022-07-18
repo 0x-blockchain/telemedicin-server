@@ -8,11 +8,13 @@ dotenv.config();
 
 /*******Auth Controller************/
 
-const createUserWithEmail = async (req, res, next) => {
-  checkValidation(req, res);
+const createUserWithEmail = async (req, res) => {
+//   checkValidation(req, res);
   // Check exist
-  const { fname, lname, email, role, number } = req.body;
+  console.log(req.body)
+  const { firstname, lastname, email, role, number } = req.body;
   try {
+    console.log('--------------------')
     let user = await User.findOne({ email });
     if (user) {
       return res.status(400).json({ msg: 'This Email already exist' });
@@ -24,19 +26,25 @@ const createUserWithEmail = async (req, res, next) => {
     
 
     user = new User({
-      fname,
-      lname,
-      email,
-      password,
-      number,
-      role
+        firstname,
+        lastname,
+        email,
+        password,
+        number,
+        role
     });
+
+    console.log(user)
 
     await user.save();
 
     const payload = {
       user: {
-        id: user.id
+        id: user.id,
+        email: user.email,
+        role: user.role,
+        firstname: user.firstname,
+        lastname: user.lastname,
       }
     };
 
@@ -74,7 +82,11 @@ const userLoginWithEmail = async (req, res, next) => {
 
     const payload = {
       user: {
-        id: user.id
+        id: user.id,
+        email: user.email,
+        role: user.role,
+        firstname: user.firstname,
+        lastname: user.lastname,
       }
     };
 

@@ -2,11 +2,11 @@ const mongoose = require('mongoose');
 const { string } = require('yargs');
 
 const UserSchema = new mongoose.Schema({
-  fname: {
+  firstname: {
     type: String,
     required: true
   },
-  lname: {
+  lastname: {
     type: String,
     required: true
   },
