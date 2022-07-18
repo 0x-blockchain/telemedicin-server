@@ -1,7 +1,12 @@
 const mongoose = require('mongoose');
+const { string } = require('yargs');
 
 const UserSchema = new mongoose.Schema({
-  name: {
+  fname: {
+    type: String,
+    required: true
+  },
+  lname: {
     type: String,
     required: true
   },
@@ -14,11 +19,11 @@ const UserSchema = new mongoose.Schema({
     type: String,
     required: true
   },
-  region: {
+  password: {
     type: String,
     required: true
   },
-  password: {
+  number : {
     type: String,
     required: true
   },

@@ -14,6 +14,10 @@ module.exports = function(app) {
 
   const awaitHandlerFactory = require("../middleware/awaitHandlerFactory");
 
+  app.get('/test', (req, res) => {
+    res.send('hello world');
+  })
+
   //auth routes
   app.post('/auth/register', 
     createUserSchema,

@@ -9,9 +9,9 @@ dotenv.config();
 /*******Auth Controller************/
 
 const createUserWithEmail = async (req, res, next) => {
-  checkValidation(req);
+  checkValidation(req, res);
   // Check exist
-  const { name, email, password, role, region } = req.body;
+  const { fname, lname, email, role, number } = req.body;
   try {
     let user = await User.findOne({ email });
     if (user) {
@@ -24,11 +24,12 @@ const createUserWithEmail = async (req, res, next) => {
     
 
     user = new User({
-      name,
+      fname,
+      lname,
       email,
       password,
-      role,
-      region
+      number,
+      role
     });
 
     await user.save();
@@ -56,7 +57,7 @@ const createUserWithEmail = async (req, res, next) => {
 //login handler
 const userLoginWithEmail = async (req, res, next) => {
 
-  checkValidation(req);
+  checkValidation(req, res);
   const { email, password } = req.body;
   try {
     let user = await User.findOne({ email });
@@ -96,7 +97,7 @@ const userLoginWithEmail = async (req, res, next) => {
 
 
 //check validation express-validator
-const checkValidation = (req) => {
+const checkValidation = (req, res) => {
   const errors = validationResult(req);
   console.log(errors)
   if (!errors.isEmpty()) {
