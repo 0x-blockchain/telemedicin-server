@@ -1,5 +1,4 @@
 const mongoose = require('mongoose');
-const { string } = require('yargs');
 
 const UserSchema = new mongoose.Schema({
   firstname: {
