@@ -1,6 +1,7 @@
 module.exports = function(app) {
   
   const authController = require("../controllers/authController");
+  const appointmentController = require('../controllers/appointment');
   const userController = require("../controllers/userController");
   const articleController = require("../controllers/articleController");
   const ticketController = require("../controllers/ticketController");
@@ -14,30 +15,35 @@ module.exports = function(app) {
 
   const awaitHandlerFactory = require("../middleware/awaitHandlerFactory");
 
-  app.get('/test', (req, res) => {
-    res.send('hello world');
-  })
-
   //auth routes
-  app.post('/auth/register', 
+  app.post('/api/auth/register', 
     createUserSchema,
     awaitHandlerFactory(authController.createUserWithEmail)
   );
 
-  app.post('/auth/login',
+  app.post('/api/auth/login',
     validateLogin,
     awaitHandlerFactory(authController.userLoginWithEmail)
   );
 
-  // article routes
-  app.get('/article', auth(), articleController.listAll);
-  app.get('/article/:id', auth(),articleController.getObjectById);
+  app.post('/api/auth/forgot-password', awaitHandlerFactory(authController.forgotPassword))
 
-  // user routes
-  app.get('/user', auth(), userController.listAll);
-  app.get('/user/:id', auth(),userController.getObjectById);
+  // Appointment
 
-  // ticket routes
-  app.get('/ticket', auth(), ticketController.listAll);
-  app.get('/ticket/:id', auth(), ticketController.getObjectById);
+  app.post('/api/appointment', appointmentController.postAppointment);
+  app.get('/api/appointment', appointmentController.listAll);
+  app.get('/api/appointment/:id', appointmentController.getObjectById);
+
+
+//   // article routes
+//   app.get('/article', auth(), articleController.listAll);
+//   app.get('/article/:id', auth(),articleController.getObjectById);
+
+//   // user routes
+//   app.get('/user', auth(), userController.listAll);
+//   app.get('/user/:id', auth(),userController.getObjectById);
+
+//   // ticket routes
+//   app.get('/ticket', auth(), ticketController.listAll);
+//   app.get('/ticket/:id', auth(), ticketController.getObjectById);
 };

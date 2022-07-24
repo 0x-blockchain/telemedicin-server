@@ -2,6 +2,8 @@ const { validationResult } = require("express-validator");
 const User = require("../models/User");
 const bcrypt = require("bcryptjs");
 const jwt = require("jsonwebtoken");
+const HttpException = require('../utils/HttpException');
+const { sendConfirmationEmail } = require('../utils/verfification');
 const hashPassword = require("../utils/common.utils");
 const dotenv = require("dotenv");
 dotenv.config();
@@ -11,19 +13,20 @@ dotenv.config();
 const createUserWithEmail = async (req, res) => {
 //   checkValidation(req, res);
   // Check exist
-  console.log(req.body)
   const { firstname, lastname, email, role, number } = req.body;
   try {
     let user = await User.findOne({ email });
     if (user) {
-      return res.status(400).json({ msg: 'This Email already exist' });
+        throw new HttpException(
+            400,
+            `This Email already exist with ${role}`
+        );
     }
 
     await hashPassword(req);
 
     const password = req.body.password;
     
-
     user = new User({
         firstname,
         lastname,
@@ -98,8 +101,6 @@ const userLoginWithEmail = async (req, res, next) => {
         res.send({ type: "success", message: "successful", token });
       }
     );
-    const authHeader = req;
-    console.log(authHeader);
   } catch (err) {
     console.error(err.message);
     return res.status(500).json({ msg: 'Something went wrong' });
@@ -107,10 +108,38 @@ const userLoginWithEmail = async (req, res, next) => {
 };
 
 
+//forgot Password handler
+const forgotPassword = async (req, res, next) => {
+
+    checkValidation(req, res);
+    try {
+        const { email } = req.body;
+        const user = await User.findOne({ email });
+        if (!user) {
+            return res.status(401).json({ msg: 'Unregestered Account' });
+        }
+
+        const random = Math.floor(Math.random() * 100 + 54);
+
+        const userToken = jwt.sign({ email: email }, process.env.SECRET_JWT, {
+            expiresIn: "365d",
+        });
+        const nodemailer = await sendConfirmationEmail(email, random, userToken);
+
+        if (!nodemailer.state) {
+            throw new HttpException(500, "Something went wrong with nodemailer");
+        }
+
+        res.send({ type: "success", message: "We sent URL to your mail inbox", token: nodemailer.token });
+
+    } catch (err) {
+        return res.status(500).json({ msg: 'Something went wrong' });
+    }
+};
+
 //check validation express-validator
 const checkValidation = (req, res) => {
   const errors = validationResult(req);
-  console.log(errors)
   if (!errors.isEmpty()) {
     return res.status(400).json({ msg: 'Validation faild' });
   }
@@ -120,5 +149,6 @@ const checkValidation = (req, res) => {
 /****Export******/
 module.exports = {
   createUserWithEmail,
-  userLoginWithEmail
+  userLoginWithEmail,
+  forgotPassword
 };

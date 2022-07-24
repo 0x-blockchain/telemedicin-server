@@ -55,11 +55,13 @@ const sendConfirmationEmail = async (req, res) => {
     };
     try {
         const response = await mailer.sendMail(data);
-        console.log(response)
-        res.status(200).send("Email send successfully")
+        console.log(response);
+        return {
+            state : true,
+            token: token
+        };
     } catch (error) {
-        console.log(error);
-        res.status(500).send("Error proccessing charge");
+        return false;
     }
     
 }
@@ -90,5 +92,6 @@ const sendEmail = async (req, res) => {
         res.status(500).send("Error proccessing charge");
     }
 }
+
 
 module.exports = { sendEmail, sendConfirmationEmail };
