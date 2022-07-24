@@ -36,7 +36,6 @@ exports.postAppointment = async function (req, res) {
             age
         });
         await appointment.save();
-
         res.send({ type: "success", message: "successful" });
     } catch {(e) => {
         console.log(e);

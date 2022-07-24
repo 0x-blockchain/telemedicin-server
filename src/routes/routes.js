@@ -2,6 +2,7 @@ module.exports = function(app) {
   
   const authController = require("../controllers/authController");
   const appointmentController = require('../controllers/appointment');
+  const doctorsController = require('../controllers/doctors');
   const userController = require("../controllers/userController");
   const articleController = require("../controllers/articleController");
   const ticketController = require("../controllers/ticketController");
@@ -34,6 +35,10 @@ module.exports = function(app) {
   app.get('/api/appointment', appointmentController.listAll);
   app.get('/api/appointment/:id', appointmentController.getObjectById);
 
+
+  // Doctors
+  app.post('/api/doctors/search', doctorsController.searchDoctors);
+  app.post('/api/doctors/profile', doctorsController.postDcotorProfile);
 
 //   // article routes
 //   app.get('/article', auth(), articleController.listAll);
