@@ -42,3 +42,26 @@ exports.postAppointment = async function (req, res) {
     }}
     
 }
+
+exports.deleteAppointment = async function (req, res) {
+    logger.info('Appointment.postAppointment called ' + requestinfostring(req));
+    try {
+        const { selected } = req.body;
+        if(selected){
+            await selected.map(async(item) => {
+                await Appointment.findByIdAndDelete(item);
+            })
+            const data = await Appointment.find({});
+            if(data){
+                res.status(200).json(data);
+            } else {
+                res.status(400);
+            }
+        }else{
+            res.status(400);
+        }
+    } catch {(e) => {
+        console.log(e);
+    }}
+    
+}

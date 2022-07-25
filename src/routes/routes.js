@@ -32,12 +32,14 @@ module.exports = function(app) {
   // Appointment
 
   app.post('/api/appointment', appointmentController.postAppointment);
+  app.post('/api/appointment/delete', appointmentController.deleteAppointment);
   app.get('/api/appointment', appointmentController.listAll);
   app.get('/api/appointment/:id', appointmentController.getObjectById);
 
 
   // Doctors
   app.post('/api/doctors/search', doctorsController.searchDoctors);
+  app.get('/api/doctors/profile/:email', doctorsController.selectOneWithEmail);
   app.post('/api/doctors/profile', doctorsController.postDcotorProfile);
 
 //   // article routes
