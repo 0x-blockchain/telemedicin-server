@@ -38,6 +38,7 @@ module.exports = function(app) {
 
 
   // Doctors
+  app.get('/api/doctors', doctorsController.listAll);
   app.post('/api/doctors/search', doctorsController.searchDoctors);
   app.get('/api/doctors/profile/:email', doctorsController.selectOneWithEmail);
   app.post('/api/doctors/profile', doctorsController.postDcotorProfile);

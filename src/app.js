@@ -11,6 +11,9 @@ app.use(cors());
 // Enable pre-flight
 app.options("*", cors());
 
+app.use(express.static('public')); 
+app.use('/uploads', express.static('uploads'));
+
 routes(app);
 
 module.exports = app;

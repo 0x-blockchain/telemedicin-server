@@ -17,12 +17,12 @@ const AppointmentSchema = new mongoose.Schema({
     type: String,
     required: true
   },
-  sdrname: {
+  did: { //doctor Id
     type: String,
     required: true
   },
   age : {
-    type: String,
+    type: Number,
     required: true
   },
   isopen: {

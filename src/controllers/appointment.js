@@ -26,13 +26,13 @@ exports.getObjectById = function (req, res) {
 exports.postAppointment = async function (req, res) {
     logger.info('Appointment.postAppointment called ' + requestinfostring(req));
     try {
-        const { name, email, phone, services, sdrname, age } = req.body;
+        const { name, email, phone, services, age, did } = req.body;
         const appointment = new Appointment({
             name,
             email,
             phone,
             services,
-            sdrname,
+            did,
             age
         });
         await appointment.save();

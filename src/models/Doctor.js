@@ -18,6 +18,22 @@ const DoctorSchema = new mongoose.Schema({
     imagePath: {
         type: String,
     },
+    firstname: {
+        type: String,
+        required: true
+    },
+    lastname: {
+        type: String,
+        required: true
+    },
+    major: {
+        type: String,
+        required: true
+    },
+    phone: {
+        type: String,
+        required: true
+    },
     date: {
         type: Date,
         default: Date.now
