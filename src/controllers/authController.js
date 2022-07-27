@@ -11,20 +11,15 @@ dotenv.config();
 /*******Auth Controller************/
 
 const createUserWithEmail = async (req, res) => {
-//   checkValidation(req, res);
+  checkValidation(req, res);
   // Check exist
   const { firstname, lastname, email, role, number } = req.body;
   try {
     let user = await User.findOne({ email });
     if (user) {
-        throw new HttpException(
-            400,
-            `This Email already exist with ${role}`
-        );
+        return res.status(400).json({type: "failed", msg: 'Email already registered!.'})
     }
-
     await hashPassword(req);
-
     const password = req.body.password;
     
     user = new User({
@@ -35,8 +30,6 @@ const createUserWithEmail = async (req, res) => {
         number,
         role
     });
-
-    console.log(user)
 
     await user.save();
 
@@ -60,7 +53,7 @@ const createUserWithEmail = async (req, res) => {
       }
     );
   } catch (err) {
-    return res.status(500).json({ msg: 'Something went wrong' });
+    return res.status(500).json({ type: "failed", msg: 'Something went wrong' });
   }
 };
 
@@ -73,13 +66,13 @@ const userLoginWithEmail = async (req, res, next) => {
     let user = await User.findOne({ email });
 
     if (!user) {
-      return res.status(401).json({ msg: 'Email is not verified' });
+      return res.status(401).json({ type: "failed", msg: 'Email is not verified' });
     }
 
     const isMatch = await bcrypt.compare(password, user.password);
 
     if (!isMatch) {
-      return res.status(401).json({ msg: 'Incorrect account or password' });
+      return res.status(401).json({ type: "failed", msg: 'Incorrect account or password' });
     }
 
     const payload = {
@@ -103,7 +96,7 @@ const userLoginWithEmail = async (req, res, next) => {
     );
   } catch (err) {
     console.error(err.message);
-    return res.status(500).json({ msg: 'Something went wrong' });
+    return res.status(500).json({ type: "failed", msg: 'Something went wrong' });
   }
 };
 
@@ -116,7 +109,7 @@ const forgotPassword = async (req, res, next) => {
         const { email } = req.body;
         const user = await User.findOne({ email });
         if (!user) {
-            return res.status(401).json({ msg: 'Unregestered Account' });
+            return res.status(401).json({ type: "failed", msg: 'Unregestered Account' });
         }
 
         const random = Math.floor(Math.random() * 100 + 54);
@@ -133,7 +126,7 @@ const forgotPassword = async (req, res, next) => {
         res.send({ type: "success", message: "We sent URL to your mail inbox", token: nodemailer.token });
 
     } catch (err) {
-        return res.status(500).json({ msg: 'Something went wrong' });
+        return res.status(500).json({ type: "failed", msg: 'Something went wrong' });
     }
 };
 
@@ -141,7 +134,7 @@ const forgotPassword = async (req, res, next) => {
 const checkValidation = (req, res) => {
   const errors = validationResult(req);
   if (!errors.isEmpty()) {
-    return res.status(400).json({ msg: 'Validation faild' });
+    return res.status(400).json({ type: "failed", msg: 'Validation faild' });
   }
 };
 

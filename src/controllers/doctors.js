@@ -17,10 +17,10 @@ const storage = multer.diskStorage({
     }
 });
 
-exports.searchDoctors = function (req, res) {
+exports.searchDoctors = async function (req, res) {
     logger.info('Doctors.searchDoctors called ' + requestinfostring(req));
-    const { search } = req.body
-    Doctor.find({ name : { $regex: search, $options: 'i' } }, function (err, data) {
+    const { keyword } = req.body
+    Doctor.find({$or: [{ firstname : { $regex: keyword, $options: 'i' } }, { lastname : { $regex: keyword, $options: 'i' } }] }, function (err, data) {
 		if (err) {
 			res.status(400).send(err);
 		}
@@ -40,7 +40,7 @@ exports.postDcotorProfile = async function (req, res) {
             const tempExpFields = JSON.parse(expFields);
             const tempEduFields = JSON.parse(eduFields);
             const tempLastFields = JSON.parse(lastFields);
-
+            console.log(tempLastFields)
             if(isExit) {
                 const filter = { email };
                 const update = req.file ? { 
@@ -51,6 +51,7 @@ exports.postDcotorProfile = async function (req, res) {
                     lastname: user.lastname,
                     major: tempLastFields.major,
                     phone: tempLastFields.phone,
+                    address: tempLastFields.address,
                     imagePath: req.file?.path
                 } : { 
                     experiences: tempExpFields,
@@ -59,7 +60,8 @@ exports.postDcotorProfile = async function (req, res) {
                     firstname: user.firstname,
                     lastname: user.lastname,
                     major: tempLastFields.major,
-                    phone: tempLastFields.phone
+                    phone: tempLastFields.phone,
+                    address: tempLastFields.address
                 };
                 await Doctor.findOneAndUpdate(filter, update);
             } else {
@@ -72,7 +74,8 @@ exports.postDcotorProfile = async function (req, res) {
                     major: tempLastFields.major,
                     phone: tempLastFields.phone,
                     imagePath: req.file?.path,
-                    email: email
+                    email: email,
+                    address: tempLastFields.address
                 })
             }
             res.status(200).json({message: 'success'});
@@ -97,6 +100,17 @@ exports.selectOneWithEmail = function (req, res) {
 	logger.info('Doctors.selectOneWithEmail called ' + requestinfostring(req));
     const email = req.params.email;
     Doctor.find({ email : email }, function (err, data) {
+		if (err) {
+			res.status(400).send(err);
+		}
+		res.status(200).json(data);
+	});
+};
+
+exports.selectOne = function (req, res) {
+	logger.info('Doctors.selectOne called ' + requestinfostring(req));
+    const id = req.params.id;
+    Doctor.findById(id, function (err, data) {
 		if (err) {
 			res.status(400).send(err);
 		}

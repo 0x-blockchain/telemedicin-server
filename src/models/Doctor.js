@@ -34,6 +34,10 @@ const DoctorSchema = new mongoose.Schema({
         type: String,
         required: true
     },
+    address: {
+        type: String,
+        required: true
+    },
     date: {
         type: Date,
         default: Date.now
