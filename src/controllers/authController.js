@@ -16,6 +16,7 @@ const createUserWithEmail = async (req, res) => {
   const { firstname, lastname, email, role, number } = req.body;
   try {
     let user = await User.findOne({ email });
+    console.log(user)
     if (user) {
         return res.status(400).json({type: "failed", msg: 'Email already registered!.'})
     }

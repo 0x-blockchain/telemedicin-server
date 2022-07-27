@@ -1,9 +1,11 @@
 module.exports = function(app) {
   
-  const authController = require("../controllers/authController");
-  const appointmentController = require('../controllers/appointment');
-  const doctorsController = require('../controllers/doctors');
-  const newsletterController = require('../controllers/newsletter');
+    const authController = require("../controllers/authController");
+    const appointmentController = require('../controllers/appointment');
+    const doctorsController = require('../controllers/doctors');
+    const newsletterController = require('../controllers/newsletter');
+    const feedbackController = require('../controllers/feedback');
+
   
 //   const userController = require("../controllers/userController");
 
@@ -45,4 +47,7 @@ module.exports = function(app) {
 
   // NewsLetter
   app.post('/api/newsletter/add', newsletterController.createOne);
+
+  // Feedback
+  app.post('/api/feedback/add', feedbackController.createOne);
 };
