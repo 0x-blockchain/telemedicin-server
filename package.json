@@ -1,7 +1,7 @@
 {
   "name": "telemedicine-with-mongoose-and-express-validation",
   "version": "0.0.1",
-  "description": "Express, Express-Validation, MongoDB with Mongoose, Unit test with Jest/supertest/mongodb-memory-server",
+  "description": "Telemedicine server using Express, Express-Validation, MongoDB with Mongoose, Unit test with Jest/supertest/mongodb-memory-server",
   "scripts": {
     "start": "node server.js",
     "dev": "nodemon server.js",

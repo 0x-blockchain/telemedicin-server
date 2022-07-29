@@ -40,7 +40,6 @@ exports.postDcotorProfile = async function (req, res) {
             const tempExpFields = JSON.parse(expFields);
             const tempEduFields = JSON.parse(eduFields);
             const tempLastFields = JSON.parse(lastFields);
-            console.log(tempLastFields)
             if(isExit) {
                 const filter = { email };
                 const update = req.file ? { 
