@@ -15,14 +15,27 @@ const storage = multer.diskStorage({
     }
 });
 
-exports.listAll = function (req, res) {
+exports.listAll = async function (req, res) {
 	logger.info('Blog.listAll called ' + requestinfostring(req));
-	Blog.find({}, function (err, data) {
-		if (err) {
+    
+    Blog.find({}).sort({date: -1}).exec( function( err, data) {
+        if (err) {
 			res.status(400).send(err);
 		}
 		res.status(200).json(data);
-	});
+    });
+};
+
+
+exports.latestBlogs = async function (req, res) {
+	logger.info('Blog.listAll called ' + requestinfostring(req));
+    
+    Blog.find({}).sort({date: -1}).limit(3).exec( function( err, data) {
+        if (err) {
+			res.status(400).send(err);
+		}
+		res.status(200).json(data);
+    });
 };
 
 exports.getObjectById = function (req, res) {
@@ -34,6 +47,23 @@ exports.getObjectById = function (req, res) {
 		}
 		res.status(200).json(data);
 	});
+};
+
+exports.getObjectByIdwithRelative = function (req, res) {
+	logger.info('Blog.getObjectById called ' + requestinfostring(req));
+    
+	Blog.findById(req.params.id, async function (err, data) {
+		if (err) {
+			logger.error(err);
+			res.status(400).send(err);
+		}
+        const prev = await Blog.find({_id: {$gt: req.params.id}}).sort({date: -1}).limit(1);
+        const next = await Blog.find({_id: {$lt: req.params.id}}).sort({date: -1}).limit(1);
+
+		res.status(200).json({data, prev, next});
+	});
+
+   
 };
 
 exports.postBlog = async function (req, res) {
