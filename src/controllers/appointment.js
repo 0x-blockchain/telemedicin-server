@@ -8,7 +8,7 @@ exports.listAll = function (req, res) {
 		if (err) {
 			res.send(err);
 		}
-		res.json(data);
+		res.status(200).json(data);
 	});
 };
 
@@ -19,7 +19,7 @@ exports.getObjectById = function (req, res) {
 			logger.error(err);
 			res.send(err);
 		}
-		res.json(data);
+		res.status(200).json(data);
 	});
 };
 
@@ -36,7 +36,7 @@ exports.postAppointment = async function (req, res) {
             age
         });
         await appointment.save();
-        res.send({ type: "success", message: "successful" });
+        res.status(200).json({ type: "success", message: "successful" });
     } catch {(e) => {
         console.log(e);
     }}

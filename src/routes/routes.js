@@ -5,7 +5,7 @@ module.exports = function(app) {
     const doctorsController = require('../controllers/doctors');
     const newsletterController = require('../controllers/newsletter');
     const feedbackController = require('../controllers/feedback');
-
+    const blogController = require('../controllers/blogs');
   
 //   const userController = require("../controllers/userController");
 
@@ -50,4 +50,12 @@ module.exports = function(app) {
 
   // Feedback
   app.post('/api/feedback/add', feedbackController.createOne);
+
+
+  // Blog
+  app.post('/api/blogs/add', blogController.postBlog);
+  app.post('/api/blogs/update', blogController.updateBlog);
+  app.post('/api/blogs/delete', blogController.deleteBlog);
+  app.get('/api/blogs', blogController.listAll);
+  app.get('/api/blogs/:id', blogController.getObjectById);
 };
