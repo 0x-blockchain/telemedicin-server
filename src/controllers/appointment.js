@@ -36,7 +36,7 @@ exports.postAppointment = async function (req, res) {
             age
         });
         await appointment.save();
-        res.status(200).json({ type: "success", message: "successful" });
+        res.status(200).json({ type: "success", msg: "Appointment successfully submitted." });
     } catch {(e) => {
         console.log(e);
     }}
@@ -47,18 +47,20 @@ exports.deleteAppointment = async function (req, res) {
     logger.info('Appointment.postAppointment called ' + requestinfostring(req));
     try {
         const { selected } = req.body;
-        if(selected){
-            await selected.map(async(item) => {
-                await Appointment.findByIdAndDelete(item);
+
+        try {
+            const promises = selected.map(async item => {
+                return await Appointment.findByIdAndDelete(item);   
             })
-            const data = await Appointment.find({});
-            if(data){
+            
+            // wait until all promises resolve
+            const results = await Promise.all(promises)
+            if(results) {
+                const data = await Appointment.find({});
                 res.status(200).json(data);
-            } else {
-                res.status(400);
             }
-        }else{
-            res.status(400);
+        } catch {
+            res.status(400).json({msg: 'Something went wrong.'});
         }
     } catch {(e) => {
         console.log(e);
