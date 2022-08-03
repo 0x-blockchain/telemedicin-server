@@ -6,6 +6,7 @@ module.exports = function(app) {
     const newsletterController = require('../controllers/newsletter');
     const feedbackController = require('../controllers/feedback');
     const blogController = require('../controllers/blogs');
+    const commentsController = require('../controllers/comments');
   
 //   const userController = require("../controllers/userController");
 
@@ -60,4 +61,12 @@ module.exports = function(app) {
   app.get('/api/blogs/latest', blogController.latestBlogs);
   app.get('/api/blogs/:id', blogController.getObjectById);
   app.get('/api/blogs/show/:id', blogController.getObjectByIdwithRelative);
+
+  /**
+   * comments controller
+   */
+  app.post('/api/comments/add', commentsController.postComment);
+  app.get('/api/comments/:id', commentsController.getCommentsById);
+  app.post('/api/comments/up', commentsController.upCommentById);
+  app.post('/api/comments/down', commentsController.downCommentById);
 };
