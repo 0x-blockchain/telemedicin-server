@@ -12,6 +12,14 @@ const BlogSchema = new mongoose.Schema({
     imagePath: {
         type: String,
     },
+    category: {
+        type: String,
+        required: true
+    },
+    tags: {
+        type: Array,
+        default: []
+    },
     date: {
         type: Date,
         default: Date.now

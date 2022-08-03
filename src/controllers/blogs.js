@@ -49,16 +49,18 @@ exports.getObjectById = function (req, res) {
 	});
 };
 
-exports.getObjectByIdwithRelative = function (req, res) {
-	logger.info('Blog.getObjectById called ' + requestinfostring(req));
+exports.getObjectsSerials = function (req, res) {
+	logger.info('Blog.getObjectsSerials called ' + requestinfostring(req));
     
 	Blog.findById(req.params.id, async function (err, data) {
 		if (err) {
 			logger.error(err);
 			res.status(400).send(err);
 		}
-        const prev = await Blog.find({_id: {$gt: req.params.id}}).sort({date: -1}).limit(1);
-        const next = await Blog.find({_id: {$lt: req.params.id}}).sort({date: -1}).limit(1);
+        const curDate = data.date;
+        const prevs = await Blog.find({date: {$gt: curDate}}).sort({date: -1});
+        const next = await Blog.findOne({date: {$lt: curDate}}).sort({date: -1});
+        const prev = prevs[prevs.length - 1];
 
 		res.status(200).json({data, prev, next});
 	});
@@ -73,9 +75,9 @@ exports.postBlog = async function (req, res) {
         const { blog } = req.body;
         const tempdata = JSON.parse(blog);
 
-        const { title, content } = tempdata;
+        const { title, content, category, tags } = tempdata;
         const result = await Blog.create({
-            title, content, imagePath: req.file?.path
+            title, content, imagePath: req.file?.path, category, tags
         })
         res.status(200).json({type: 'success', msg: 'successfully submitted'});
     })
@@ -88,12 +90,12 @@ exports.updateBlog = async function (req, res) {
     upload(req, res, async function(err) {
         const { blog } = req.body;
         const tempdata = JSON.parse(blog);
-        const { _id, title, content } = tempdata;
+        const { _id, title, content, category, tags } = tempdata;
         const filter = { _id };
         const update = req.file ? { 
-            title, content, imagePath: req.file?.path
+            title, content, imagePath: req.file?.path, category, tags
         } : { 
-            title, content
+            title, content, category, tags
         };
 
         await Blog.findOneAndUpdate(filter, update);

@@ -24,7 +24,7 @@ const hashToken = async (params) => {
 const transporter = {
     auth: {
         // Update the SendGrid API key here
-        api_key: '###'
+        api_key: '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'
     }
 }
 

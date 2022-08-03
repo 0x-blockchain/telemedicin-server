@@ -60,7 +60,7 @@ module.exports = function(app) {
   app.get('/api/blogs', blogController.listAll);
   app.get('/api/blogs/latest', blogController.latestBlogs);
   app.get('/api/blogs/:id', blogController.getObjectById);
-  app.get('/api/blogs/show/:id', blogController.getObjectByIdwithRelative);
+  app.get('/api/blogs/show/:id', blogController.getObjectsSerials);
 
   /**
    * comments controller
