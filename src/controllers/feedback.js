@@ -17,5 +17,5 @@ exports.createOne = async function (req, res) {
 	logger.info('feedback.createOne called ' + requestinfostring(req));
     const feedback = req.body;
     Feedback.create(feedback);
-    res.status(200).json({ type: 'success', msg: 'Successfully submitted.'})
+    res.status(200).json({ type: 'success', msg: 'Feedback successfully submitted.'})
 };

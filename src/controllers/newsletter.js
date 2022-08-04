@@ -26,6 +26,6 @@ exports.createOne = async function (req, res) {
         NewsLetterEmails.create({
             email: req.body.email
         })
-        res.status(200).json({ type: 'success', msg: 'Successfully submitted.'})
+        res.status(200).json({ type: 'success', msg: 'Newsletter Successfully submitted.'})
     }
 };

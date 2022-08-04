@@ -15,17 +15,17 @@ const storage = multer.diskStorage({
     }
 });
 
-exports.listAll = async function (req, res) {
-	logger.info('Blog.listAll called ' + requestinfostring(req));
-    
-    Blog.find({}).sort({date: -1}).exec( function( err, data) {
+exports.listById = async function (req, res) {
+	logger.info('Blog.listById called ' + requestinfostring(req));
+    const category = req.params.id;
+    const options = category == 'all' ? {} : { 'category' : category }
+    Blog.find(options).sort({date: -1}).exec( function( err, data) {
         if (err) {
 			res.status(400).send(err);
 		}
 		res.status(200).json(data);
     });
 };
-
 
 exports.latestBlogs = async function (req, res) {
 	logger.info('Blog.listAll called ' + requestinfostring(req));
@@ -123,6 +123,4 @@ exports.deleteBlog = async function (req, res) {
     } catch {
         res.status(400).json({msg: 'Something went wrong.'});
     }
-    
-    
 }
