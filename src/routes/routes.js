@@ -56,6 +56,7 @@ module.exports = function(app) {
   // Blog
   app.post('/api/blogs/add', blogController.postBlog);
   app.post('/api/blogs/update', blogController.updateBlog);
+  app.post('/api/blogs/search', blogController.searchBlog);
   app.post('/api/blogs/delete', blogController.deleteBlog);
   app.get('/api/blogs/:id', blogController.listById);
   app.get('/api/blogs/home/latest', blogController.latestBlogs);

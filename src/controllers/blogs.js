@@ -105,6 +105,20 @@ exports.updateBlog = async function (req, res) {
     
 }
 
+
+
+exports.searchBlog = async function (req, res) {
+    logger.info('Blog.deleteBlog called ' + requestinfostring(req));
+
+    const { keyword } = req.body;
+    Blog.find({$or: [{ title : { $regex: keyword, $options: 'i' } }, { content : { $regex: keyword, $options: 'i' } }] }, function (err, data) {
+		if (err) {
+			res.status(400).send(err);
+		}
+		res.status(200).json(data);
+	});
+}
+
 exports.deleteBlog = async function (req, res) {
     logger.info('Blog.deleteBlog called ' + requestinfostring(req));
 
