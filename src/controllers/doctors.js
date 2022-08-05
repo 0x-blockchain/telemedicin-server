@@ -19,7 +19,7 @@ const storage = multer.diskStorage({
 
 exports.searchDoctors = async function (req, res) {
     logger.info('Doctors.searchDoctors called ' + requestinfostring(req));
-    const { keyword } = req.body
+    const { keyword } = req.body;
     Doctor.find({$or: [{ firstname : { $regex: keyword, $options: 'i' } }, { lastname : { $regex: keyword, $options: 'i' } }] }, function (err, data) {
 		if (err) {
 			res.status(400).send(err);
