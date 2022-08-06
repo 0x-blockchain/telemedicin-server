@@ -28,7 +28,7 @@ exports.listById = async function (req, res) {
 };
 
 exports.latestBlogs = async function (req, res) {
-	logger.info('Blog.listAll called ' + requestinfostring(req));
+	logger.info('Blog.latestBlogs called ' + requestinfostring(req));
     
     Blog.find({}).sort({date: -1}).limit(3).exec( function( err, data) {
         if (err) {
