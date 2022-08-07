@@ -55,7 +55,6 @@ const sendConfirmationEmail = async (req, res) => {
     };
     try {
         const response = await mailer.sendMail(data);
-        console.log(response);
         return {
             state : true,
             token: token
@@ -67,7 +66,6 @@ const sendConfirmationEmail = async (req, res) => {
 }
 
 const sendEmail = async (req, res) => {
-    console.log(req.body)
     const {name, email, number, subject, text} = req.body;
 
     const data = {

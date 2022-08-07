@@ -110,8 +110,6 @@ exports.updateBlog = async function (req, res) {
 exports.searchBlog = async function (req, res) {
     logger.info('Blog.deleteBlog called ' + requestinfostring(req));
     const { keyword, category } = req.body;
-
-    console.log(keyword, category)
     
     const options = category == 'all' ? {} : { 'category' : category };
 

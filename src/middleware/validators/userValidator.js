@@ -1,8 +1,8 @@
 const { check } = require("express-validator");
 
 exports.createUserSchema = [
-    check('firstname').exists().withMessage("firstname is required"),
-    check('lastname').exists().withMessage("lastname is required"),
+    check('fname').exists().withMessage("First Name is required"),
+    check('lname').exists().withMessage("Last Name is required"),
     check('email')
         .exists()
         .withMessage("Email is required")

@@ -8,15 +8,14 @@ const hashPassword = require("../utils/common.utils");
 const dotenv = require("dotenv");
 dotenv.config();
 
-/*******Auth Controller************/
 
 const createUserWithEmail = async (req, res) => {
   checkValidation(req, res);
-  // Check exist
-  const { firstname, lastname, email, role, number } = req.body;
+
+  const { fname, lname, email, role, number } = req.body;
   try {
     let user = await User.findOne({ email });
-    console.log(user)
+
     if (user) {
         return res.status(400).json({type: "failed", msg: 'Email already registered!.'})
     }
@@ -24,8 +23,8 @@ const createUserWithEmail = async (req, res) => {
     const password = req.body.password;
     
     user = new User({
-        firstname,
-        lastname,
+        fname,
+        lname,
         email,
         password,
         number,
@@ -39,8 +38,8 @@ const createUserWithEmail = async (req, res) => {
         id: user.id,
         email: user.email,
         role: user.role,
-        firstname: user.firstname,
-        lastname: user.lastname,
+        fname: user.fname,
+        lname: user.lname,
       }
     };
 
@@ -50,11 +49,11 @@ const createUserWithEmail = async (req, res) => {
       { expiresIn: '5 days' },
       (err, token) => {
         if (err) throw err;
-        res.send({ type: "success", message: "successful", token });
+        res.send({ type: "success", msg: "Signup successfully submitted.", token, role });
       }
     );
   } catch (err) {
-    return res.status(500).json({ type: "failed", msg: 'Something went wrong' });
+    return res.status(500).json({ type: "failed", msg: 'Something went wrong.'});
   }
 };
 
@@ -81,8 +80,8 @@ const userLoginWithEmail = async (req, res, next) => {
         id: user.id,
         email: user.email,
         role: user.role,
-        firstname: user.firstname,
-        lastname: user.lastname,
+        fname: user.fname,
+        lname: user.lname,
       }
     };
 
@@ -96,7 +95,6 @@ const userLoginWithEmail = async (req, res, next) => {
       }
     );
   } catch (err) {
-    console.error(err.message);
     return res.status(500).json({ type: "failed", msg: 'Something went wrong' });
   }
 };

@@ -15,14 +15,17 @@ const DoctorSchema = new mongoose.Schema({
         type: String,
         required: true
     },
-    imagePath: {
+    avatarPath: {
         type: String,
     },
-    firstname: {
+    licensePath: {
+        type: String,
+    },
+    fname: {
         type: String,
         required: true
     },
-    lastname: {
+    lname: {
         type: String,
         required: true
     },
