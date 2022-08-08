@@ -103,7 +103,6 @@ exports.listAll = async function (req, res) {
 
 exports.selectOneWithEmail = function (req, res) {
 	logger.info('Doctors.selectOneWithEmail called ' + requestinfostring(req));
-    const email = req.params.email;
     Doctor.findOne({ email : email }, function (err, data) {
 		if (err) {
 			res.status(400).send(err);

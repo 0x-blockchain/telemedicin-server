@@ -4,7 +4,7 @@ const mongoose = require('mongoose');
 const dbURI = 'mongodb://localhost:27017/telemedicine';
 
 const dbOptions = {
-    useNewUrlParser: true, 
+    useNewUrlParser: true,
     useCreateIndex: true,
     useFindAndModify: false,
     useUnifiedTopology: true

@@ -17,13 +17,33 @@ const AppointmentSchema = new mongoose.Schema({
     type: String,
     required: true
   },
-  did: { //doctor Id
+  doctorEmail: {
     type: String,
     required: true
   },
   age : {
     type: Number,
     required: true
+  },
+  book_date: {
+    type: Date,
+    required: true
+  },
+  book_time: {
+    type: String,
+    required: true
+  },
+  feedback: {
+    type: Number,
+    default: 100
+  },
+  reviews: {
+    type: String,
+    default: ''
+  },
+  meetingUrl: {
+    type: String,
+    default: ''
   },
   isopen: {
     type: Boolean,

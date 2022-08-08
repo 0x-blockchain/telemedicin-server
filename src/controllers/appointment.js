@@ -12,6 +12,59 @@ exports.listAll = function (req, res) {
 	});
 };
 
+exports.lastAppointments = function (req, res) {
+	logger.info('Appointment.lastAppointments called ' + requestinfostring(req));
+    let today = new Date();
+    today.setHours(0,0,0,0);
+
+    const options = { $and:[
+        {book_date: {$lt: today}},
+        {doctorEmail: req.params.email}
+    ]}
+	Appointment.find(options, function (err, data) {
+		if (err) {
+			res.send(err);
+		}
+		res.status(200).json(data);
+	});
+};
+
+exports.comingAppointments = function (req, res) {
+	logger.info('Appointment.lastAppointments called ' + requestinfostring(req));
+    let today = new Date();
+    today.setHours(0,0,0,0);
+
+    const options = {$and: [
+        {book_date: {$gt: today}},
+        {doctorEmail: req.params.email}
+    ]}
+	Appointment.find(options, function (err, data) {
+		if (err) {
+			res.status(400).send(err);
+		}
+		res.status(200).json(data);
+	});
+};
+
+exports.todayAppointments = function (req, res) {
+	logger.info('Appointment.lastAppointments called ' + requestinfostring(req));
+    let today = new Date();
+    today.setHours(0,0,0,0);
+
+    let tomorrow = new Date()
+    tomorrow.setHours(23,59,59,999);
+    const options = {$and: [
+        {book_date: {$gte: today, $lt: tomorrow}},
+        {doctorEmail: req.params.email}
+    ]}
+	Appointment.find(options, function (err, data) {
+		if (err) {
+			res.send(err);
+		}
+		res.status(200).json(data);
+	});
+};
+
 exports.getObjectById = function (req, res) {
 	logger.info('Appointment.getObjectById called ' + requestinfostring(req));
 	Appointment.findById(req.params.id, function (err, data) {
@@ -26,14 +79,17 @@ exports.getObjectById = function (req, res) {
 exports.postAppointment = async function (req, res) {
     logger.info('Appointment.postAppointment called ' + requestinfostring(req));
     try {
-        const { name, email, phone, services, age, did } = req.body;
+        const { name, email, phone, services, age, doctorEmail, date, event, meetingUrl } = req.body;
         const appointment = new Appointment({
             name,
             email,
             phone,
             services,
-            did,
-            age
+            doctorEmail,
+            age,
+            meetingUrl,
+            book_date: date,
+            book_time: event
         });
         await appointment.save();
         res.status(200).json({ type: "success", msg: "Appointment successfully submitted." });
@@ -53,7 +109,6 @@ exports.deleteAppointment = async function (req, res) {
                 return await Appointment.findByIdAndDelete(item);   
             })
             
-            // wait until all promises resolve
             const results = await Promise.all(promises)
             if(results) {
                 const data = await Appointment.find({});
