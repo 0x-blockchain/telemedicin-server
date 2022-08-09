@@ -34,10 +34,13 @@ module.exports = function(app) {
 
     app.post('/api/appointment', appointmentController.postAppointment);
     app.post('/api/appointment/delete', appointmentController.deleteAppointment);
+    app.post('/api/appointment/feedback', appointmentController.feedbackById);
     app.get('/api/appointment', appointmentController.listAll);
     app.get('/api/appointment/last/:email', appointmentController.lastAppointments);
     app.get('/api/appointment/today/:email', appointmentController.todayAppointments);
     app.get('/api/appointment/coming/:email', appointmentController.comingAppointments);
+    app.get('/api/appointment/patient/last/:email', appointmentController.patientLastAppointments);
+    app.get('/api/appointment/patient/coming/:email', appointmentController.patientComingAppointments);
     app.get('/api/appointment/:id', appointmentController.getObjectById);
 
 
@@ -46,7 +49,7 @@ module.exports = function(app) {
     app.get('/api/doctors/:id', doctorsController.selectOne);
     app.post('/api/doctors/search', doctorsController.searchDoctors);
     app.get('/api/doctors/profile/:email', doctorsController.selectOneWithEmail);
-    app.post('/api/doctors/profile', doctorsController.postDcotorProfile);
+    app.post('/api/doctors/profile', doctorsController.postDoctorProfile);
 
 
     // NewsLetter

@@ -19,16 +19,18 @@ const storage = multer.diskStorage({
 
 exports.searchDoctors = async function (req, res) {
     logger.info('Doctors.searchDoctors called ' + requestinfostring(req));
-    const { keyword } = req.body;
-    Doctor.find({$or: [{ fname : { $regex: keyword, $options: 'i' } }, { lname : { $regex: keyword, $options: 'i' } }] }, function (err, data) {
-		if (err) {
+    const { keyword, category } = req.body;
+    const options = category == 'all' ? {} : { 'major' : category };
+
+    Doctor.find({$and: [options, {$or: [{ fname : { $regex: keyword, $options: 'i' } }, { lname : { $regex: keyword, $options: 'i' } }]}]}).sort({date: -1}).exec( function( err, data) {
+        if (err) {
 			res.status(400).send(err);
 		}
 		res.status(200).json(data);
-	});
+    });
 }
 
-exports.postDcotorProfile = async function (req, res) {
+exports.postDoctorProfile = async function (req, res) {
     logger.info('Doctors.postDoctorProfile called ' + requestinfostring(req));
     let upload = multer({ storage: storage }).fields(
         [
@@ -48,6 +50,7 @@ exports.postDcotorProfile = async function (req, res) {
             const tempExpFields = JSON.parse(expFields);
             const tempEduFields = JSON.parse(eduFields);
             const tempLastFields = JSON.parse(lastFields);
+            console.log(req.files)
             if(isExit) {
                 const filter = { email };
                 let update = {
@@ -80,7 +83,9 @@ exports.postDcotorProfile = async function (req, res) {
                     phone: tempLastFields.phone,
                     imagePath: req.file?.path,
                     email: email,
-                    address: tempLastFields.address
+                    address: tempLastFields.address,
+                    avatarPath: req.files?.avatar[0].path,
+                    licensePath: req.files?.license[0].path,
                 })
             }
             res.status(200).json({msg: 'Profile successfully submitted.'});
@@ -103,6 +108,7 @@ exports.listAll = async function (req, res) {
 
 exports.selectOneWithEmail = function (req, res) {
 	logger.info('Doctors.selectOneWithEmail called ' + requestinfostring(req));
+    const email = req.params.email
     Doctor.findOne({ email : email }, function (err, data) {
 		if (err) {
 			res.status(400).send(err);

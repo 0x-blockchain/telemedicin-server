@@ -46,10 +46,10 @@ const createUserWithEmail = async (req, res) => {
     jwt.sign(
       payload,
       process.env.SECRET_JWT,
-      { expiresIn: '5 days' },
+      { expiresIn: '2 days' },
       (err, token) => {
         if (err) throw err;
-        res.send({ type: "success", msg: "Signup successfully submitted.", token, role });
+        res.status(200).json({ type: "success", msg: "Signup successfully submitted.", token, role });
       }
     );
   } catch (err) {
@@ -76,22 +76,22 @@ const userLoginWithEmail = async (req, res, next) => {
     }
 
     const payload = {
-      user: {
-        id: user.id,
-        email: user.email,
-        role: user.role,
-        fname: user.fname,
-        lname: user.lname,
-      }
+        user: {
+            id: user.id,
+            email: user.email,
+            role: user.role,
+            fname: user.fname,
+            lname: user.lname,
+        }
     };
 
     jwt.sign(
       payload,
       process.env.SECRET_JWT,
-      { expiresIn: '5 days' },
+      { expiresIn: '2 days' },
       (err, token) => {
         if (err) throw err;
-        res.send({ type: "success", message: "successful", token });
+        res.status(200).json({ type: "success", msg: "SingIn success.", token });
       }
     );
   } catch (err) {

@@ -4,7 +4,7 @@ const Appointment = require('../models/Appointment');
 
 exports.listAll = function (req, res) {
 	logger.info('Appointment.listAll called ' + requestinfostring(req));
-	Appointment.find({}, function (err, data) {
+	Appointment.find({}).sort({date: -1}).exec( function (err, data) {
 		if (err) {
 			res.send(err);
 		}
@@ -21,7 +21,7 @@ exports.lastAppointments = function (req, res) {
         {book_date: {$lt: today}},
         {doctorEmail: req.params.email}
     ]}
-	Appointment.find(options, function (err, data) {
+	Appointment.find(options).sort({date: -1}).exec( function (err, data) {
 		if (err) {
 			res.send(err);
 		}
@@ -38,13 +38,48 @@ exports.comingAppointments = function (req, res) {
         {book_date: {$gt: today}},
         {doctorEmail: req.params.email}
     ]}
-	Appointment.find(options, function (err, data) {
+	Appointment.find(options).sort({date: -1}).exec( function (err, data) {
 		if (err) {
 			res.status(400).send(err);
 		}
 		res.status(200).json(data);
 	});
 };
+
+exports.patientComingAppointments = function (req, res) {
+	logger.info('Appointment.patientComingAppointments called ' + requestinfostring(req));
+    let today = new Date();
+    today.setHours(0,0,0,0);
+    const options = {$and: [
+        {book_date: {$gte: today}},
+        {email: req.params.email}
+    ]}
+	Appointment.find(options).sort({date: -1}).exec( function (err, data) {
+		if (err) {
+			res.status(400).send(err);
+		}
+		res.status(200).json(data);
+	});
+};
+
+exports.patientLastAppointments = function (req, res) {
+	logger.info('Appointment.patientLastAppointments called ' + requestinfostring(req));
+    let today = new Date();
+    today.setHours(0,0,0,0);
+
+    const options = { $and:[
+        {book_date: {$lt: today}},
+        {email: req.params.email}
+    ]}
+	Appointment.find(options).sort({date: -1}).exec( function (err, data) {
+		if (err) {
+			res.send(err);
+		}
+		res.status(200).json(data);
+	});
+};
+
+
 
 exports.todayAppointments = function (req, res) {
 	logger.info('Appointment.lastAppointments called ' + requestinfostring(req));
@@ -57,7 +92,7 @@ exports.todayAppointments = function (req, res) {
         {book_date: {$gte: today, $lt: tomorrow}},
         {doctorEmail: req.params.email}
     ]}
-	Appointment.find(options, function (err, data) {
+	Appointment.find(options).sort({date: -1}).exec( function (err, data) {
 		if (err) {
 			res.send(err);
 		}
@@ -79,13 +114,15 @@ exports.getObjectById = function (req, res) {
 exports.postAppointment = async function (req, res) {
     logger.info('Appointment.postAppointment called ' + requestinfostring(req));
     try {
-        const { name, email, phone, services, age, doctorEmail, date, event, meetingUrl } = req.body;
+        const { name, email, phone, services, age, doctorEmail, doctorName, doctorPhone, date, event, meetingUrl } = req.body;
         const appointment = new Appointment({
             name,
             email,
             phone,
             services,
             doctorEmail,
+            doctorName,
+            doctorPhone,
             age,
             meetingUrl,
             book_date: date,
@@ -99,8 +136,31 @@ exports.postAppointment = async function (req, res) {
     
 }
 
+
+exports.feedbackById = async function (req, res) {
+    logger.info('Appointment.feedbackById called ' + requestinfostring(req));
+    try {
+        const { id, reviews, rating } = req.body;
+        console.log(reviews, rating)
+        const update = {
+            reviews: reviews, 
+            feedback: rating
+        }
+        Appointment.findByIdAndUpdate(id, update,  async function (err, data) {
+            if (err) {
+                logger.error(err);
+                res.status(400).send(err);
+            }
+            res.status(200).json({ type: "success", msg: "Feedback successfully submitted." });
+        });
+    } catch {(e) => {
+        res.status(400).json({msg: 'Something went wrong.'});
+    }}
+    
+}
+
 exports.deleteAppointment = async function (req, res) {
-    logger.info('Appointment.postAppointment called ' + requestinfostring(req));
+    logger.info('Appointment.deleteAppointment called ' + requestinfostring(req));
     try {
         const { selected } = req.body;
 
