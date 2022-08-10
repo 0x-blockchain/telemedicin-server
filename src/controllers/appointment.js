@@ -79,8 +79,6 @@ exports.patientLastAppointments = function (req, res) {
 	});
 };
 
-
-
 exports.todayAppointments = function (req, res) {
 	logger.info('Appointment.lastAppointments called ' + requestinfostring(req));
     let today = new Date();
@@ -135,7 +133,6 @@ exports.postAppointment = async function (req, res) {
     }}
     
 }
-
 
 exports.feedbackById = async function (req, res) {
     logger.info('Appointment.feedbackById called ' + requestinfostring(req));

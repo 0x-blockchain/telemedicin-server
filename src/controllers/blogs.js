@@ -77,7 +77,7 @@ exports.postBlog = async function (req, res) {
 
         const { title, content, category, tags } = tempdata;
         const result = await Blog.create({
-            title, content, imagePath: req.file?.path, category, tags
+            title, content, imagePath: req.file.path, category, tags
         })
         res.status(200).json({type: 'success', msg: 'successfully submitted'});
     })

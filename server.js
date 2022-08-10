@@ -5,7 +5,7 @@ const dotenv = require("dotenv");
 
 dotenv.config();
 
-const httpPort = process.env.SERVERPORT || 5000;
+const httpPort = process.env.SERVERPORT || 8080;
 connectDB(() => {
     app.listen(httpPort, () => {
         logger.info(`telemedicine server with mongodb ${httpPort} ...`);
