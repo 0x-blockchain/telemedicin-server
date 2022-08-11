@@ -12,6 +12,26 @@ exports.listAll = function (req, res) {
 	});
 };
 
+exports.listClients = function (req, res) {
+	logger.info('User.listAll called ' + requestinfostring(req));
+	User.find({role: 'client'}, function (err, data) {
+		if (err) {
+			res.send(err);
+		}
+		res.json(data);
+	});
+};
+
+exports.listStaffs = function (req, res) {
+	logger.info('User.listAll called ' + requestinfostring(req));
+	User.find({role: 'staff'}, function (err, data) {
+		if (err) {
+			res.send(err);
+		}
+		res.json(data);
+	});
+};
+
 exports.getObjectById = function (req, res) {
 	logger.info('User.getObjectById called ' + requestinfostring(req));
 	User.findById(req.params.id, function (err, data) {

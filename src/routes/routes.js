@@ -48,7 +48,7 @@ module.exports = function(app) {
 
     // Feedback
     app.post('/api/feedback/add', feedbackController.createOne);
-    app.get('/api/feedback', feedbackController.createOne);
+    app.get('/api/feedback', feedbackController.listAll);
 
     // Blog
     app.post('/api/blogs/add', blogController.postBlog);
@@ -72,5 +72,7 @@ module.exports = function(app) {
      *  User controller
      */
 
-    app.get('/api/users/', userController.listAll);
+    app.get('/api/users/all', userController.listAll);
+    app.get('/api/users/clients', userController.listClients);
+    app.get('/api/users/staffs', userController.listStaffs);
 };
