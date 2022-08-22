@@ -114,7 +114,7 @@ const forgotPassword = async (req, res, next) => {
         const random = Math.floor(Math.random() * 100 + 54);
 
         const userToken = jwt.sign({ email: email }, process.env.SECRET_JWT, {
-            expiresIn: "365d",
+            expiresIn: "1d",
         });
         const nodemailer = await sendConfirmationEmail(email, random, userToken);
 
